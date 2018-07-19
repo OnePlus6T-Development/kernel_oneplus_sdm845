@@ -2616,6 +2616,12 @@ const char *cmd_set_prop_map[DSI_CMD_SET_MAX] = {
 	"qcom,mdss-dsi-fakeframe-command",
 	"qcom,mdss-dsi-adfr-pre-switch-command",
 #endif
+	"qcom,mdss-dsi-panel-hbm-off-command",
+	"qcom,mdss-dsi-panel-hbm-on-command",
+	"qcom,mdss-dsi-panel-hbm-on-command-2",
+	"qcom,mdss-dsi-panel-hbm-on-command-3",
+	"qcom,mdss-dsi-panel-hbm-on-command-4",
+	"qcom,mdss-dsi-panel-hbm-on-command-5",
 };
 
 const char *cmd_set_state_map[DSI_CMD_SET_MAX] = {
@@ -2734,6 +2740,12 @@ const char *cmd_set_state_map[DSI_CMD_SET_MAX] = {
 	"qcom,mdss-dsi-fakeframe-command-state",
 	"qcom,mdss-dsi-adfr-pre-switch-command-state",
 #endif
+	"qcom,mdss-dsi-hbm-off-command-state",
+	"qcom,mdss-dsi-hbm-on-command-state",
+	"qcom,mdss-dsi-hbm-on-command-state",
+	"qcom,mdss-dsi-hbm-on-command-state",
+	"qcom,mdss-dsi-hbm-on-command-state",
+	"qcom,mdss-dsi-hbm-on-command-state",
 };
 
 static int dsi_panel_get_cmd_pkt_count(const char *data, u32 length, u32 *cnt)
@@ -5887,6 +5899,10 @@ int dsi_panel_enable(struct dsi_panel *panel)
 #endif
 
 	mutex_unlock(&panel->panel_lock);
+
+	if (panel->hbm_mode)
+		dsi_panel_apply_hbm_mode(panel);
+
 	return rc;
 }
 
@@ -6064,5 +6080,31 @@ int dsi_panel_post_unprepare(struct dsi_panel *panel)
 	}
 error:
 	mutex_unlock(&panel->panel_lock);
+	return rc;
+}
+
+int dsi_panel_apply_hbm_mode(struct dsi_panel *panel)
+{
+	static const enum dsi_cmd_set_type type_map[] = {
+		DSI_CMD_SET_HBM_OFF,
+		DSI_CMD_SET_HBM_ON_1,
+		DSI_CMD_SET_HBM_ON_2,
+		DSI_CMD_SET_HBM_ON_3,
+		DSI_CMD_SET_HBM_ON_4,
+		DSI_CMD_SET_HBM_ON_5
+	};
+
+	enum dsi_cmd_set_type type;
+	int rc;
+
+	if (panel->hbm_mode >= 0 && panel->hbm_mode < ARRAY_SIZE(type_map))
+		type = type_map[panel->hbm_mode];
+	else
+		type = DSI_CMD_SET_HBM_OFF;
+
+	mutex_lock(&panel->panel_lock);
+	rc = dsi_panel_tx_cmd_set(panel, type);
+	mutex_unlock(&panel->panel_lock);
+
 	return rc;
 }
