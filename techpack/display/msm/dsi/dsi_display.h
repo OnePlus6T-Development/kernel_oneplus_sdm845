@@ -766,6 +766,8 @@ int dsi_display_get_panel_vfp(void *display,
 	int h_active, int v_active);
 
 int dsi_display_register_read(struct dsi_display *dsi_display, unsigned char registers, char *buf, size_t count);
+struct dsi_display *get_main_display(void);
+
 extern int connector_state_crtc_index;
 extern int msm_drm_notifier_call_chain(unsigned long val, void *v);
 

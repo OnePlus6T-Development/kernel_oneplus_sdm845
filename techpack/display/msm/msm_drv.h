@@ -171,6 +171,7 @@ enum msm_mdp_crtc_property {
 	CRTC_PROP_CAPTURE_OUTPUT,
 
 	CRTC_PROP_IDLE_PC_STATE,
+	CRTC_PROP_CUSTOM,
 
 	/* total # of properties */
 	CRTC_PROP_COUNT
@@ -215,6 +216,7 @@ enum msm_mdp_conn_property {
 #ifdef OPLUS_FEATURE_ADFR
 	CONNECTOR_PROP_QSYNC_MIN_FPS,
 #endif
+	CONNECTOR_PROP_CUSTOM,
 
 	/* total # of properties */
 	CONNECTOR_PROP_COUNT
@@ -733,6 +735,9 @@ struct msm_drm_private {
 	bool shutdown_in_progress;
 
 	struct msm_idle idle;
+
+	/* commit end time */
+	ktime_t commit_end_time;
 };
 
 /* get struct msm_kms * from drm_device * */

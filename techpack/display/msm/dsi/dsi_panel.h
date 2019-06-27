@@ -292,6 +292,15 @@ struct dsi_panel {
 	int hbm_mode;
 	enum dsi_panel_display_mode display_mode;
 
+	int aod_mode;
+	int aod_status;
+	int aod_curr_mode;
+	int aod_disable;
+	int hbm_backlight;
+	bool is_hbm_enabled;
+	int  op_force_screenfp;
+	bool dim_status;
+
 	struct dsi_parser_utils utils;
 
 	bool lp11_init;
@@ -472,4 +481,8 @@ int dsi_panel_tx_cmd_set(struct dsi_panel *panel,
 int dsi_panel_fps60_cmd_set(struct dsi_panel *panel);
 int dsi_panel_fps120_cmd_set(struct dsi_panel *panel);
 #endif
+int dsi_panel_set_hbm_mode(struct dsi_panel *panel, int level);
+int dsi_panel_op_set_hbm_mode(struct dsi_panel *panel, int level);
+int dsi_panel_set_aod_mode(struct dsi_panel *panel, int level);
+
 #endif /* _DSI_PANEL_H_ */
