@@ -481,8 +481,7 @@ int dsi_panel_tx_cmd_set(struct dsi_panel *panel,
 int dsi_panel_fps60_cmd_set(struct dsi_panel *panel);
 int dsi_panel_fps120_cmd_set(struct dsi_panel *panel);
 #endif
-int dsi_panel_set_hbm_mode(struct dsi_panel *panel, int level);
-int dsi_panel_op_set_hbm_mode(struct dsi_panel *panel, int level);
 int dsi_panel_set_aod_mode(struct dsi_panel *panel, int level);
+int dsi_panel_update_backlight(struct dsi_panel *panel, u32 bl_lvl);
 
 #endif /* _DSI_PANEL_H_ */
